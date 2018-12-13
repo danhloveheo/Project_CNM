@@ -1,0 +1,149 @@
+body {
+	font-family: "Montserrat", sans-serif;
+	overflow-x: hidden;
+}
+
+/* 
+---------------------------------------------------------------------------
+---------------------------COMMON--------------------------------------
+---------------------------------------------------------------------------
+*/
+
+.fa-10x {
+	font-size: 10rem;
+	color: #63a599;
+}
+
+.page-sub-title h2 {
+	text-transform: uppercase;
+	position: relative;
+	display: inline-block;
+	z-index: 3;
+	background: #fff;
+	border: 3px solid #f4f1e3;
+	padding: 1rem 1.5rem;
+	font-size: 25px;
+	font-weight: 400;
+}
+.line:after {
+	border-top: 3px solid #f4f1e3;
+	content: "";
+	display: block;
+	position: absolute;
+	top: 40%;
+	left: 15px;
+	right: 15px;
+	z-index: 1;
+}
+
+.dark-overlay {
+	top: 0;
+	min-height: 100%;
+	min-width: 100%;
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+#main-footer {
+	background: #63a599;
+	color: #fff;
+}
+/* 
+---------------------------------------------------------------------------
+---------------------------INDEX PAGE--------------------------------------
+---------------------------------------------------------------------------
+*/
+
+#index-header {
+	background: url("./../img/header.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: 0, -300px;
+	min-height: 500px;
+}
+
+#index-header nav {
+	position: relative;
+	padding: 1rem 0;
+	top: 50px;
+}
+
+#index-header .navbar-nav {
+	padding: 0.5rem;
+	background-color: #63a599;
+	overflow: visible;
+	padding-right: 800px;
+	position: relative;
+	right: -200px;
+}
+
+#index-header .nav-item {
+	text-transform: uppercase;
+	padding: 0.2rem 0.7rem;
+	margin-left: 0.7rem;
+	border: 1px solid #343a40;
+	background-color: #63a599;
+	color: #343a40;
+	transition: 0.3s;
+}
+
+#index-header .nav-item:hover {
+	background-color: #343a40;
+	color: #fff;
+}
+
+#motto {
+	position: absolute;
+	bottom: 0px;
+	font-size: 30px;
+	color: #fff;
+}
+
+#index-services .service:hover {
+	background-color: #63a599;
+	color: #fff;
+	transition: 0.3s;
+}
+
+#index-services .service:hover i {
+	color: #fff;
+}
+
+#index-statistics-content {
+	background-image: url("./../img/statistic.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+	background-position: 0, -50%;
+	min-height: 200px;
+}
+
+#index-statistics-content .row {
+	min-height: 200px;
+}
+
+#index-statistics-content .counter {
+	font-size: 48px;
+	color: #fff;
+}
+
+#index-statistics-content .headline {
+	color: #63a599;
+}
+
+@media (max-width: 768px) {
+	#index-header .navbar-nav {
+		background-color: #343a40;
+		right: 0px;
+	}
+
+	#index-header .nav-item {
+		background-color: #343a40;
+		color: #fff;
+	}
+
+	#index-header .nav-item.active {
+		font-weight: bolder;
+		color: #63a599;
+	}
+}
