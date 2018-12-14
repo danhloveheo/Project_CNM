@@ -51,7 +51,9 @@
 							<a class="nav-item nav-link active" href="#">Home</a>
 							<a class="nav-item nav-link" href="#">Driver</a>
 							<a class="nav-item nav-link" href="#">Rider</a>
-							<a class="nav-item nav-link" href="#">Login</a>
+							<button class="nav-item nav-link" data-toggle="modal" data-target="#signin-modal">
+								Register&nbsp;/&nbsp;Login
+							</button>
 						</div>
 					</div>
 				</div>
@@ -207,6 +209,118 @@
 				</div>
 			</div>
 		</footer>
+
+		<!-- REGISTER MODAL -->
+		<div id="register-modal" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content w-auto">
+					<div class="modal-body signup-form m-0 p-0">
+						<form class="m-0">
+							<h2>Register</h2>
+							<p class="hint-text">Create your account. It's free and only takes a minute.</p>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-md-6">
+										<input
+											type="text"
+											class="form-control"
+											name="first_name"
+											placeholder="First Name"
+											autocomplete="false"
+										/>
+									</div>
+									<div class="col-md-6">
+										<input
+											type="text"
+											class="form-control"
+											name="last_name"
+											placeholder="Last Name"
+											autocomplete="false"
+										/>
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<input type="email" class="form-control" name="email" placeholder="Email" />
+							</div>
+							<div class="form-group">
+								<input
+									type="password"
+									class="form-control"
+									name="password"
+									placeholder="Password"
+								/>
+							</div>
+							<div class="form-group">
+								<input
+									type="password"
+									class="form-control"
+									name="confirm_password"
+									placeholder="Confirm Password"
+								/>
+							</div>
+							<div class="form-group">
+								<label class="checkbox-inline"
+									><input type="checkbox" /> I accept the <a href="#">Terms of Use</a> &amp;
+									<a href="#">Privacy Policy</a></label
+								>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary-custom btn-lg btn-block">
+									Register Now
+								</button>
+							</div>
+							<div class="text-center">
+								Already have an account?
+								<a data-dismiss="modal" data-toggle="modal" href="#signin-modal">Sign in</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END OF REGISTER MODAL -->
+
+		<!-- SIGNIN MODAL -->
+		<div id="signin-modal" class="modal fade">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content w-auto">
+					<div class="modal-body signup-form m-0 p-0">
+						<form class="m-0">
+							<h2>Sign In</h2>
+							<p class="hint-text">
+								Don't have account yet?
+								<a data-dismiss="modal" data-toggle="modal" href="#register-modal">Register</a> now!
+							</p>
+							<div class="form-group">
+								<input
+									type="email"
+									class="form-control"
+									name="email"
+									placeholder="Email"
+									autocomplete="email"
+								/>
+							</div>
+							<div class="form-group">
+								<input
+									type="password"
+									class="form-control"
+									name="password"
+									placeholder="Password"
+									autocomplete="none"
+								/>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-primary-custom btn-lg btn-block">
+									Sign In
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- END OF SIGNIN MODAL -->
 
 		<script
 			src="http://code.jquery.com/jquery-3.3.1.min.js"

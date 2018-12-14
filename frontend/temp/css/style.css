@@ -1,6 +1,31 @@
+* {
+	border-radius: 0px !important;
+}
+
 body {
 	font-family: "Montserrat", sans-serif;
 	overflow-x: hidden;
+}
+
+.btn-primary-custom {
+	background-color: #fff;
+	border: 1px solid #63a599;
+	color: #63a599;
+}
+
+.btn-primary-custom:hover,
+.btn-primary-custom:active,
+.btn-primary-custom:focus {
+	background-color: #63a599;
+	border: 1px solid #63a599;
+	box-shadow: none !important;
+	color: #fff;
+}
+
+.modal-open {
+	overflow: hidden;
+	overflow-y: scroll;
+	padding-right: 0 !important;
 }
 
 /* 
@@ -53,6 +78,7 @@ body {
 ---------------------------------------------------------------------------
 */
 
+/* HEADER */
 #index-header {
 	background: url("./../img/header.jpg");
 	background-repeat: no-repeat;
@@ -90,6 +116,13 @@ body {
 #index-header .nav-item:hover {
 	background-color: #343a40;
 	color: #fff;
+	outline: none;
+	border: 1px solid #343a40;
+}
+
+#index-header .nav-item:active,
+#index-header .nav-item:focus {
+	outline: none;
 }
 
 #motto {
@@ -99,6 +132,7 @@ body {
 	color: #fff;
 }
 
+/* SERVICES */
 #index-services .service:hover {
 	background-color: #63a599;
 	color: #fff;
@@ -109,6 +143,7 @@ body {
 	color: #fff;
 }
 
+/* STATISTICS */
 #index-statistics-content {
 	background-image: url("./../img/statistic.jpg");
 	background-repeat: no-repeat;
@@ -146,4 +181,90 @@ body {
 		font-weight: bolder;
 		color: #63a599;
 	}
+}
+
+/* SIGNUP & LOGIN */
+.form-control {
+	height: 40px;
+	box-shadow: none;
+	color: #969fa4;
+}
+.form-control:focus {
+	border: 2px solid #63a599;
+	box-shadow: none;
+}
+.form-control,
+.btn {
+	border-radius: 3px;
+}
+.signup-form {
+	width: 400px;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+.signup-form h2 {
+	color: #636363;
+	margin: 0 0 15px;
+	position: relative;
+	text-align: center;
+}
+.signup-form h2:before,
+.signup-form h2:after {
+	content: "";
+	height: 2px;
+	width: 30%;
+	background: #d4d4d4;
+	position: absolute;
+	top: 50%;
+	z-index: 2;
+}
+.signup-form h2:before {
+	left: 0;
+}
+.signup-form h2:after {
+	right: 0;
+}
+.signup-form .hint-text {
+	color: #999;
+	margin-bottom: 30px;
+	text-align: center;
+}
+.signup-form form {
+	color: #999;
+	border-radius: 3px;
+	margin-bottom: 15px;
+	background: #f2f3f7;
+	padding: 30px;
+}
+.signup-form .form-group {
+	margin-bottom: 20px;
+}
+.signup-form input[type="checkbox"] {
+	margin-top: 3px;
+}
+.signup-form .btn {
+	font-size: 16px;
+	font-weight: bold;
+	min-width: 140px;
+	outline: none !important;
+}
+.signup-form .row div:first-child {
+	padding-right: 10px;
+}
+.signup-form .row div:last-child {
+	padding-left: 10px;
+}
+.signup-form a {
+	color: #fff;
+	text-decoration: underline;
+}
+.signup-form a:hover {
+	text-decoration: none;
+}
+.signup-form form a {
+	color: #63a599;
+	text-decoration: none;
+}
+.signup-form form a:hover {
+	text-decoration: underline;
 }
