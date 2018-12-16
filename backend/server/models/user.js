@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const _ = require("lodash");
 
 const UserSchema = new mongoose.Schema({
@@ -37,8 +39,41 @@ const UserSchema = new mongoose.Schema({
 		enum: ["Rider", "Driver", "Administrator"]
 	},
 	refreshToken: {
-		type: String,
-		required: true
+		type: String
+	}
+});
+
+UserSchema.methods.toJSON = function() {
+	return _.pick(this, ["firstName", "lastName", "email", "role"]);
+};
+
+UserSchema.methods.generateAuthTokens = function() {
+	let payload = {
+		email: this.email,
+		role: this.role
+	};
+
+	let idToken = jwt.sign(payload, process.env.JWT_ID_TOKEN_SECRET, {
+		expiresIn: process.env.TOKEN_EXPIRES_IN
+	});
+	let refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET);
+
+	this.refreshToken = refreshToken;
+	return this.save().then(() => {
+		return { idToken, refreshToken };
+	});
+};
+
+UserSchema.pre("save", function(next) {
+	if (this.isModified("password")) {
+		bcrypt.genSalt(10, (err, salt) => {
+			bcrypt.hash(this.password, salt, (err, hash) => {
+				this.password = hash;
+				next();
+			});
+		});
+	} else {
+		next();
 	}
 });
 
