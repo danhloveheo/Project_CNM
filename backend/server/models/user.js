@@ -54,7 +54,7 @@ UserSchema.methods.generateAuthTokens = function() {
 	};
 
 	let idToken = jwt.sign(payload, process.env.JWT_ID_TOKEN_SECRET, {
-		expiresIn: process.env.TOKEN_EXPIRES_IN
+		expiresIn: process.env.TOKEN_LIFE
 	});
 	let refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_TOKEN_SECRET);
 
@@ -62,6 +62,42 @@ UserSchema.methods.generateAuthTokens = function() {
 	return this.save().then(() => {
 		return { idToken, refreshToken };
 	});
+};
+
+UserSchema.methods.generateIdToken = function() {
+	let payload = {
+		email: this.email,
+		role: this.role
+	};
+
+	let idToken = jwt.sign(payload, process.env.JWT_ID_TOKEN_SECRET, {
+		expiresIn: process.env.TOKEN_LIFE
+	});
+
+	let refreshToken = this.refreshToken;
+	return { idToken, refreshToken };
+};
+
+UserSchema.statics.findByCredentials = function(email, password) {
+	return this.findOne({ email })
+		.then(user => {
+			if (!user) {
+				return Promise.reject();
+			}
+
+			return new Promise((resolve, reject) => {
+				bcrypt.compare(password, user.password, (err, res) => {
+					if (res) {
+						resolve(user);
+					} else {
+						reject();
+					}
+				});
+			});
+		})
+		.catch(err => {
+			return Promise.reject();
+		});
 };
 
 UserSchema.pre("save", function(next) {

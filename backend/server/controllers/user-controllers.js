@@ -13,14 +13,26 @@ function register(req, res) {
 				user,
 				idToken: tokens.idToken,
 				refreshToken: tokens.refreshToken,
-				expiresIn: process.env.TOKEN_EXPIRES_IN
+				expiresIn: process.env.TOKEN_LIFE
 			});
 		})
 		.catch(err => res.status(400).send());
 }
 
 function login(req, res) {
-	res.status(200).send(req.body);
+	let body = _.pick(req.body, ["email", "password"]);
+
+	User.findByCredentials(body.email, body.password)
+		.then(user => {
+			let tokens = user.generateIdToken();
+			res.status(200).send({
+				user,
+				idToken: tokens.idToken,
+				refreshToken: tokens.refreshToken,
+				expiresIn: process.env.TOKEN_LIFE
+			});
+		})
+		.catch(err => res.status(400).send(err));
 }
 
 module.exports = { register, login };
