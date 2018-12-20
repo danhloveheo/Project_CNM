@@ -8,6 +8,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/resend-idtoken", resendIdToken);
 
+// Request đến các route từ đây xuống cần có header "x-auth" chứa giá trị idToken
 router.use(authenticateIdToken);
 
 // router.get("/secure", (req, res) => {
