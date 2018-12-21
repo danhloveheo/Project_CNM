@@ -23,7 +23,7 @@ function register(req, res) {
 				expiresIn: process.env.TOKEN_LIFE
 			});
 		})
-		.catch(err => res.status(400).send());
+		.catch(err => res.send());
 }
 
 // Hàm dùng trong route /user/login

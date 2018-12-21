@@ -37,7 +37,7 @@ const UserSchema = new mongoose.Schema({
 	role: {
 		type: String,
 		required: true,
-		enum: ["Rider", "Driver", "Administrator"]
+		enum: ["rider", "driver", "administrator"]
 	},
 	refreshToken: {
 		type: String

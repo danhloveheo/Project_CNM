@@ -41,6 +41,7 @@
               name="email"
               placeholder="Email"
               autocomplete="email"
+              v-model="login.email"
             >
           </div>
           <div class="form-group">
@@ -50,6 +51,7 @@
               name="password"
               placeholder="Password"
               autocomplete="none"
+              v-model="login.password"
             >
           </div>
           <div class="form-group">
@@ -62,7 +64,7 @@
     <!--RIDER REGISTER MODAL -->
     <b-modal id="rider-modal" class="register-modal" hide-header hide-footer centered>
       <div class="signup-form m-0 p-0">
-        <form class="m-0">
+        <form class="m-0" @submit.prevent="onSubmitRider">
           <h2>Rider</h2>
           <p class="hint-text">Create your account. It's free and only takes a minute.</p>
           <div class="form-group">
@@ -74,6 +76,7 @@
                   name="first_name"
                   placeholder="First Name"
                   autocomplete="false"
+                  v-model="rider.firstName"
                 >
               </div>
               <div class="col-md-6">
@@ -83,15 +86,28 @@
                   name="last_name"
                   placeholder="Last Name"
                   autocomplete="false"
+                  v-model="rider.lastName"
                 >
               </div>
             </div>
           </div>
           <div class="form-group">
-            <input type="email" class="form-control" name="email" placeholder="Email">
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              placeholder="Email"
+              v-model="rider.email"
+            >
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password">
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              placeholder="Password"
+              v-model="rider.password"
+            >
           </div>
           <div class="form-group">
             <input
@@ -99,6 +115,7 @@
               class="form-control"
               name="confirm_password"
               placeholder="Confirm Password"
+              v-model="rider.confirmPassword"
             >
           </div>
           <div class="form-group">
@@ -122,7 +139,7 @@
     <!--DRIVER REGISTER MODAL -->
     <b-modal id="driver-modal" class="register-modal" hide-header hide-footer centered>
       <div class="signup-form m-0 p-0">
-        <form class="m-0">
+        <form class="m-0" @submit.prevent="onSubmitDriver">
           <h2>Driver</h2>
           <p class="hint-text">Create your account. It's free and only takes a minute.</p>
           <div class="form-group">
@@ -134,6 +151,7 @@
                   name="first_name"
                   placeholder="First Name"
                   autocomplete="false"
+                  v-model="driver.firstName"
                 >
               </div>
               <div class="col-md-6">
@@ -143,15 +161,28 @@
                   name="last_name"
                   placeholder="Last Name"
                   autocomplete="false"
+                  v-model="driver.lastName"
                 >
               </div>
             </div>
           </div>
           <div class="form-group">
-            <input type="email" class="form-control" name="email" placeholder="Email">
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              placeholder="Email"
+              v-model="driver.email"
+            >
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password">
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              placeholder="Password"
+              v-model="driver.password"
+            >
           </div>
           <div class="form-group">
             <input
@@ -159,6 +190,7 @@
               class="form-control"
               name="confirm_password"
               placeholder="Confirm Password"
+              v-model="driver.confirmPassword"
             >
           </div>
           <div class="form-group">
@@ -181,12 +213,62 @@
   </section>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      login: {
+        email: "",
+        password: ""
+      },
+      rider: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        role: "rider"
+      },
+      driver: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        role: "driver"
+      }
+    };
+  },
+  methods: {
+    onSubmitRider() {
+      const formData = {
+        firstName: this.rider.firstName,
+        lastName: this.rider.lastName,
+        email: this.rider.email,
+        password: this.rider.password,
+        role: this.rider.role
+      };
+      this.$store.dispatch("registerRider", formData);
+    },
+    onSubmitDriver() {
+      const formData = {
+        firstName: this.driver.firstName,
+        lastName: this.driver.lastName,
+        email: this.driver.email,
+        password: this.driver.password,
+        role: this.driver.role
+      };
+      this.$store.dispatch("registerDriver", formData);
+    }
+  }
+};
+</script>
+
 <style>
 div.login-modal .modal-content,
 div.register-modal .modal-content {
   width: 400px !important;
 }
-
 div.login-modal .modal-body,
 div.register-modal .modal-body {
   padding: 0;
