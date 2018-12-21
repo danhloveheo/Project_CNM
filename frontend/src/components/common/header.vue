@@ -27,7 +27,7 @@
     <!-- LOGIN MODAL -->
     <b-modal id="login-modal" class="login-modal" hide-header hide-footer centered>
       <div class="signup-form m-0 p-0">
-        <form class="m-0">
+        <form class="m-0" @submit.prevent="onLogin">
           <h2>Log In</h2>
           <p class="hint-text">
             Don't have account yet? Register as a
@@ -248,8 +248,10 @@ export default {
         password: this.rider.password,
         role: this.rider.role
       };
+
       this.$store.dispatch("registerRider", formData);
     },
+
     onSubmitDriver() {
       const formData = {
         firstName: this.driver.firstName,
@@ -258,7 +260,16 @@ export default {
         password: this.driver.password,
         role: this.driver.role
       };
+
       this.$store.dispatch("registerDriver", formData);
+    },
+    onLogin() {
+      const formData = {
+        email: this.login.email,
+        password: this.login.password
+      };
+
+      this.$store.dispatch("login", formData);
     }
   }
 };
@@ -269,6 +280,7 @@ div.login-modal .modal-content,
 div.register-modal .modal-content {
   width: 400px !important;
 }
+
 div.login-modal .modal-body,
 div.register-modal .modal-body {
   padding: 0;
