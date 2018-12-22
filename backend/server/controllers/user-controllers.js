@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const jwt = require("jsonwebtoken");
 
 const { mongoose } = require("./../db/mongoose");
 const { User } = require("./../models/user");
@@ -54,6 +55,16 @@ function resendIdToken(req, res) {
 	let { refreshToken } = _.pick(req.body, ["refreshToken"]);
 
 	if (refreshToken) {
+		// Kiểm tra tính hợp lệ của refreshToken
+		jwt.verify(refreshToken, process.env.JWT_REFRESH_TOKEN_SECRET, (err, decoded) => {
+			if (err) {
+				return res.status(401).send({
+					error: true,
+					message: err.message
+				});
+			}
+		});
+
 		// Tìm user trong database theo refreshToken
 		User.findOne({ refreshToken })
 			.then(user => {

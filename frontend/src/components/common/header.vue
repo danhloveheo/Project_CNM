@@ -15,17 +15,26 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav ml-auto">
-            <button class="nav-item nav-link active" href="#">Home</button>
-            <button class="nav-item nav-link" v-b-modal.driver-modal>Driver</button>
-            <button class="nav-item nav-link" v-b-modal.rider-modal>Rider</button>
-            <button class="nav-item nav-link" v-b-modal.login-modal>Login</button>
+            <button class="nav-item nav-link active">Home</button>
+            <button class="nav-item nav-link" v-b-modal.driver-modal v-if="!isAuthenticated">Driver</button>
+            <button class="nav-item nav-link" v-b-modal.rider-modal v-if="!isAuthenticated">Rider</button>
+            <button class="nav-item nav-link" v-b-modal.login-modal v-if="!isAuthenticated">Login</button>
+            <button class="nav-item nav-link" v-if="isAuthenticated">Hello {{fullName}}</button>
+            <button class="nav-item nav-link" v-if="isAuthenticated" @click="onLogout">Logout</button>
           </div>
         </div>
       </div>
     </nav>
     <!-- END NAVBAR -->
     <!-- LOGIN MODAL -->
-    <b-modal id="login-modal" class="login-modal" hide-header hide-footer centered>
+    <b-modal
+      id="login-modal"
+      ref="loginModalRef"
+      class="login-modal"
+      hide-header
+      hide-footer
+      centered
+    >
       <div class="signup-form m-0 p-0">
         <form class="m-0" @submit.prevent="onLogin">
           <h2>Log In</h2>
@@ -62,7 +71,14 @@
     </b-modal>
 
     <!--RIDER REGISTER MODAL -->
-    <b-modal id="rider-modal" class="register-modal" hide-header hide-footer centered>
+    <b-modal
+      id="rider-modal"
+      ref="riderModalRef"
+      class="register-modal"
+      hide-header
+      hide-footer
+      centered
+    >
       <div class="signup-form m-0 p-0">
         <form class="m-0" @submit.prevent="onSubmitRider">
           <h2>Rider</h2>
@@ -137,7 +153,14 @@
     </b-modal>
 
     <!--DRIVER REGISTER MODAL -->
-    <b-modal id="driver-modal" class="register-modal" hide-header hide-footer centered>
+    <b-modal
+      id="driver-modal"
+      ref="driverModalRef"
+      class="register-modal"
+      hide-header
+      hide-footer
+      centered
+    >
       <div class="signup-form m-0 p-0">
         <form class="m-0" @submit.prevent="onSubmitDriver">
           <h2>Driver</h2>
@@ -239,6 +262,14 @@ export default {
       }
     };
   },
+  computed: {
+    isAuthenticated() {
+      return this.$store.getters.isAuthenticated;
+    },
+    fullName() {
+      return this.$store.getters.fullName;
+    }
+  },
   methods: {
     onSubmitRider() {
       const formData = {
@@ -249,6 +280,8 @@ export default {
         role: this.rider.role
       };
 
+      this.resetInput();
+      this.$refs.riderModalRef.hide();
       this.$store.dispatch("registerRider", formData);
     },
 
@@ -261,6 +294,8 @@ export default {
         role: this.driver.role
       };
 
+      this.resetInput();
+      this.$refs.driverModalRef.hide();
       this.$store.dispatch("registerDriver", formData);
     },
     onLogin() {
@@ -269,7 +304,23 @@ export default {
         password: this.login.password
       };
 
+      this.resetInput();
+      this.$refs.loginModalRef.hide();
       this.$store.dispatch("login", formData);
+    },
+    onLogout() {
+      this.$store.dispatch("logout");
+    },
+    resetInput() {
+      for (let key in this.login) {
+        this.login[key] = "";
+      }
+      for (let key in this.rider) {
+        this.rider[key] = "";
+      }
+      for (let key in this.driver) {
+        this.driver[key] = "";
+      }
     }
   }
 };
