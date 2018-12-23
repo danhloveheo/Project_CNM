@@ -269,3 +269,52 @@ body {
 .signup-form form a:hover {
 	text-decoration: underline;
 }
+
+/* 
+---------------------------------------------------------------------------
+---------------------------RIDER PAGE--------------------------------------
+---------------------------------------------------------------------------
+*/
+#book-car .input-group-text {
+	min-width: 2.5rem;
+	background-color: #63a599;
+	color: #fff;
+}
+
+#book-car .price-counter {
+	font-size: 3rem;
+	font-weight: 900;
+}
+
+#book-car .price-tag:hover,
+#points-interest .row.item:hover {
+	background-color: #63a599;
+	color: #fff;
+}
+
+#points-interest .name {
+	font-weight: 900;
+	font-size: 1.5rem;
+}
+
+#points-interest .address,
+#points-interest .rating {
+	font-weight: 500;
+	font-size: 1.2rem;
+}
+
+#points-interest .address i {
+	min-width: 30px;
+	color: #d60000;
+}
+
+#points-interest .rating i {
+	min-width: 30px;
+	color: #fbbd08;
+}
+
+@media (max-width: 768px) {
+	#map {
+		margin-bottom: 25px;
+	}
+}

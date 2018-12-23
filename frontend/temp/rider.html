@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+			integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+			crossorigin="anonymous"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+			integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+			crossorigin="anonymous"
+		/>
+		<link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700" rel="stylesheet" />
+		<link rel="stylesheet" href="css/style.css" />
+
+		<!-- SLICK -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css"
+		/>
+		<title>Sidecar</title>
+	</head>
+
+	<body>
+		<!-- HEADER -->
+		<section id="index-header" class="position-relative">
+			<!-- NAVBAR -->
+			<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+				<div class="container">
+					<a class="navbar-brand" href="#">SIDECAR</a>
+					<button
+						class="navbar-toggler"
+						type="button"
+						data-toggle="collapse"
+						data-target="#navbarNavAltMarkup"
+					>
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+						<div class="navbar-nav ml-auto">
+							<a class="nav-item nav-link active" href="#">Home</a>
+							<a class="nav-item nav-link" href="#">Driver</a>
+							<a class="nav-item nav-link" href="#">Rider</a>
+							<button class="nav-item nav-link" data-toggle="modal" data-target="#signin-modal">
+								Register&nbsp;/&nbsp;Login
+							</button>
+						</div>
+					</div>
+				</div>
+			</nav>
+			<!-- END NAVBAR -->
+		</section>
+
+		<!-- BOOK CAR SECTION -->
+		<section id="book-car">
+			<!-- Title -->
+			<div class="container my-5">
+				<div class="row">
+					<div class="col">
+						<div class="page-sub-title text-center">
+							<h2 class>Book A Car</h2>
+							<div class="line"></div>
+						</div>
+					</div>
+				</div>
+				<!-- End of Title -->
+				<!-- Content -->
+				<div class="row mt-5">
+					<div class="col-md-8"><div id="map" style="width: 100%; height: 600px"></div></div>
+					<div class="col-md-4">
+						<!-- Set location input -->
+						<div class="input-group mb-4">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+							</div>
+							<input type="text" class="form-control" placeholder="Current Location" />
+						</div>
+						<div class="input-group mb-4">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="fas fa-flag"></i></span>
+							</div>
+							<input type="text" class="form-control" placeholder="Destination Location" />
+						</div>
+						<!-- End of set location input -->
+						<!-- Price -->
+						<div class="row border m-0 price-tag">
+							<div class="col">
+								<div class="text-center price-counter">15.50 $</div>
+								<div class="text-center mb-2 font-weight-bold">CASH</div>
+							</div>
+						</div>
+						<!-- End of price -->
+						<button class="btn btn-lg btn-primary-custom btn-block mt-4">Confirm Pickup</button>
+					</div>
+				</div>
+				<!-- End of content -->
+			</div>
+		</section>
+
+		<!-- POINTS OF INTEREST SECTION -->
+		<section id="points-interest" class="my-5">
+			<!-- Title -->
+			<div class="container">
+				<div class="row mb-5">
+					<div class="col">
+						<div class="page-sub-title text-center">
+							<h2 class>Points of Interest</h2>
+							<div class="line"></div>
+						</div>
+					</div>
+				</div>
+				<!-- End of Title -->
+				<!-- Content -->
+				<!-- Point of interest -->
+				<div class="row justify-content-center border-bottom item py-4">
+					<div class="col-md-7 align-self-center">
+						<p class="name">Cooking Class Saigon - Vietnam Cookery Center</p>
+						<p class="address">
+							<i class="fas fa-map-marker-alt"></i>&nbsp; 26 Lý Tự Trọng, Bến Nghé, Quận 1, Hồ Chí
+							Minh, Vietnam
+						</p>
+						<p class="rating"><i class="fas fa-star"></i>&nbsp; (4.2/5)</p>
+					</div>
+					<div class="col-md-3 p-2">
+						<img
+							src="https://lh3.googleusercontent.com/p/AF1QipMlL1vP4JiYMzuopB8m_3tmLFJIUzaEgk79OkZd=s1600-w500"
+							class="img img-fluid"
+						/>
+					</div>
+				</div>
+				<!-- End of point of interest -->
+				<!-- Point of interest -->
+				<div class="row justify-content-center border-bottom item py-4">
+					<div class="col-md-7 align-self-center">
+						<p class="name">Tao Đàn Park</p>
+						<p class="address">
+							<i class="fas fa-map-marker-alt"></i>&nbsp; Trương Định, Phường Bến Thành, Quận 1, Hồ
+							Chí Minh, Vietnam
+						</p>
+						<p class="rating"><i class="fas fa-star"></i>&nbsp; (4.4/5)</p>
+					</div>
+					<div class="col-md-3 p-2">
+						<img
+							src="https://lh3.googleusercontent.com/p/AF1QipOTCOK5MqmYjkCLKYwIdekn0x8PbSU-WxXl6PJ6=s1600-w500"
+							class="img img-fluid"
+						/>
+					</div>
+				</div>
+				<!-- End of point of interest -->
+				<!-- Point of interest -->
+				<div class="row justify-content-center border-bottom item py-4">
+					<div class="col-md-7 align-self-center">
+						<p class="name">Saigon Skydeck</p>
+						<p class="address">
+							<i class="fas fa-map-marker-alt"></i>&nbsp; 36 Hồ Tùng Mậu, Bến Nghé, Quận 1, Hồ Chí
+							Minh, Vietnam
+						</p>
+						<p class="rating"><i class="fas fa-star"></i>&nbsp; (4.4/5)</p>
+					</div>
+					<div class="col-md-3 p-2">
+						<img
+							src="https://lh3.googleusercontent.com/p/AF1QipOk1Et2G16xWP8H6l6Dk0QcbLO-cUNe_DmQAWeS=s1600-w500"
+							class="img img-fluid"
+						/>
+					</div>
+				</div>
+				<!-- End of point of interest -->
+				<!-- Point of interest -->
+				<div class="row justify-content-center border-bottom item py-4">
+					<div class="col-md-7 align-self-center">
+						<p class="name">Trần Hưng Đạo Statue</p>
+						<p class="address">
+							<i class="fas fa-map-marker-alt"></i>&nbsp; Công trường Mê Linh, Bến Nghé, Quận 1, Hồ
+							Chí Minh, Vietnam
+						</p>
+						<p class="rating"><i class="fas fa-star"></i>&nbsp; (4.2/5)</p>
+					</div>
+					<div class="col-md-3 p-2">
+						<img
+							src="https://lh3.googleusercontent.com/p/AF1QipNmQBg-UVSIBgAkWiDd9n5J57jNMKKHU39QiKqW=s1600-w500"
+							class="img img-fluid"
+						/>
+					</div>
+				</div>
+				<!-- End of point of interest -->
+				<!-- End of content -->
+			</div>
+		</section>
+
+		<!-- FOOTER -->
+		<footer id="main-footer" class="text-center p-4">
+			<div class="container">
+				<div class="row">
+					<div class="col"><p>Copyright &copy; 2018 Sidecar</p></div>
+				</div>
+			</div>
+		</footer>
+		<script
+			src="http://code.jquery.com/jquery-3.3.1.min.js"
+			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+			integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+			integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+			crossorigin="anonymous"
+		></script>
+
+		<!-- SLICK -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.js"></script>
+
+		<!-- GOOGLE MAP API -->
+		<script
+			async
+			defer
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCp3QauVfDwqyT7kwndhlTi-ot6kwAu_2E&callback=initMap"
+		></script>
+
+		<script>
+			$(".slider").slick({
+				infinite: true,
+				slideToShow: 1,
+				slideToScroll: 1,
+				autoplay: true,
+				autoplaySpeed: 5000
+			});
+
+			// Initialize and add the map
+			function initMap() {
+				// Current Location
+				var curLocation = { lat: 10.805162, lng: 106.645613 };
+
+				// Destination Location
+				var desLocation = { lat: 10.744375, lng: 106.623247 };
+
+				// The map, centered at current location
+				var map = new google.maps.Map(document.getElementById("map"), {
+					zoom: 17,
+					center: curLocation,
+					styles: [
+						{
+							elementType: "geometry",
+							stylers: [
+								{
+									color: "#ebe3cd"
+								}
+							]
+						},
+						{
+							elementType: "labels.text.fill",
+							stylers: [
+								{
+									color: "#523735"
+								}
+							]
+						},
+						{
+							elementType: "labels.text.stroke",
+							stylers: [
+								{
+									color: "#f5f1e6"
+								}
+							]
+						},
+						{
+							featureType: "administrative",
+							elementType: "geometry",
+							stylers: [
+								{
+									visibility: "off"
+								}
+							]
+						},
+						{
+							featureType: "administrative",
+							elementType: "geometry.stroke",
+							stylers: [
+								{
+									color: "#c9b2a6"
+								}
+							]
+						},
+						{
+							featureType: "administrative.land_parcel",
+							elementType: "geometry.stroke",
+							stylers: [
+								{
+									color: "#dcd2be"
+								}
+							]
+						},
+						{
+							featureType: "administrative.land_parcel",
+							elementType: "labels.text.fill",
+							stylers: [
+								{
+									color: "#ae9e90"
+								}
+							]
+						},
+						{
+							featureType: "landscape.natural",
+							elementType: "geometry",
+							stylers: [
+								{
+									color: "#dfd2ae"
+								}
+							]
+						},
+						{
+							featureType: "poi",
+							stylers: [
+								{
+									visibility: "off"
+								}
+							]
+						},
+						{
+							featureType: "poi",
+							elementType: "geometry",
+							stylers: [
+								{
+									color: "#dfd2ae"
+								}
+							]
+						},
+						{
+							featureType: "poi",
+							elementType: "labels.text.fill",
+							stylers: [
+								{
+									color: "#93817c"
+								}
+							]
+						},
+						{
+							featureType: "poi.park",
+							elementType: "geometry.fill",
+							stylers: [
+								{
+									color: "#a5b076"
+								}
+							]
+						},
+						{
+							featureType: "poi.park",
+							elementType: "labels.text.fill",
+							stylers: [
+								{
+									color: "#447530"
+								}
+							]
+						},
+						{
+							featureType: "road",
+							elementType: "geometry",
+							stylers: [
+								{
+									color: "#f5f1e6"
+								}
+							]
+						},
+						{
+							featureType: "road",
+							elementType: "labels.icon",
+							stylers: [
+								{
+									visibility: "off"
+								}
+							]
+						},
+						{
+							featureType: "road.arterial",
+							elementType: "geometry",
+							stylers: [
+								{
+									color: "#fdfcf8"
+								}
+							]
+						},
+						{
+							featureType: "road.highway",
+							elementType: "geometry",
+							stylers: [
+								{
+									color: "#f8c967"
+								}
+							]
+						},
+						{
+							featureType: "road.highway",
+							elementType: "geometry.stroke",
+							stylers: [
+								{
+									color: "#e9bc62"
+								}
+							]
+						},
+						{
+							featureType: "road.highway.controlled_access",
+							elementType: "geometry",
+							stylers: [
+								{
+									color: "#e98d58"
+								}
+							]
+						},
+						{
+							featureType: "road.highway.controlled_access",
+							elementType: "geometry.stroke",
+							stylers: [
+								{
+									color: "#db8555"
+								}
+							]
+						},
+						{
+							featureType: "road.local",
+							elementType: "labels.text.fill",
+							stylers: [
+								{
+									color: "#806b63"
+								}
+							]
+						},
+						{
+							featureType: "transit",
+							stylers: [
+								{
+									visibility: "off"
+								}
+							]
+						},
+						{
+							featureType: "transit.line",
+							elementType: "geometry",
+							stylers: [
+								{
+									color: "#dfd2ae"
+								}
+							]
+						},
+						{
+							featureType: "transit.line",
+							elementType: "labels.text.fill",
+							stylers: [
+								{
+									color: "#8f7d77"
+								}
+							]
+						},
+						{
+							featureType: "transit.line",
+							elementType: "labels.text.stroke",
+							stylers: [
+								{
+									color: "#ebe3cd"
+								}
+							]
+						},
+						{
+							featureType: "transit.station",
+							elementType: "geometry",
+							stylers: [
+								{
+									color: "#dfd2ae"
+								}
+							]
+						},
+						{
+							featureType: "water",
+							elementType: "geometry.fill",
+							stylers: [
+								{
+									color: "#b9d3c2"
+								}
+							]
+						},
+						{
+							featureType: "water",
+							elementType: "labels.text.fill",
+							stylers: [
+								{
+									color: "#92998d"
+								}
+							]
+						}
+					]
+				});
+
+				// Bound location for autozoom
+				let bounds = new google.maps.LatLngBounds();
+				bounds.extend(curLocation);
+				bounds.extend(desLocation);
+				map.fitBounds(bounds);
+				map.panToBounds(bounds);
+
+				// Current location marker
+				var currentMarker = new google.maps.Marker({
+					position: curLocation,
+					map: map,
+					draggable: true,
+					zIndex: 1000,
+					icon: "./img/cur-marker.png"
+				});
+
+				// Destination location marker
+				var currentMarker = new google.maps.Marker({
+					position: desLocation,
+					map: map,
+					icon: "./img/des-marker.png"
+				});
+
+				// Car for hire marker
+				var carsMarker = [
+					new google.maps.Marker({
+						position: { lat: 10.806733, lng: 106.645374 },
+						map: map,
+						icon: "./img/car-marker.png"
+					}),
+					new google.maps.Marker({
+						position: { lat: 10.804638, lng: 106.646095 },
+						map: map,
+						icon: "./img/car-marker.png"
+					}),
+					new google.maps.Marker({
+						position: { lat: 10.806062, lng: 106.646602 },
+						map: map,
+						icon: "./img/car-marker.png"
+					}),
+					new google.maps.Marker({
+						position: { lat: 10.806551, lng: 106.644256 },
+						map: map,
+						icon: "./img/car-marker.png"
+					})
+				];
+			}
+		</script>
+	</body>
+</html>

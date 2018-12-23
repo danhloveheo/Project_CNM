@@ -127,7 +127,7 @@ export const store = new Vuex.Store({
 							console.log(err.response.data);
 							dispatch("logout");
 						});
-				}, 13000 - 3000);
+				}, 60 * 60 * 1000 - 10 * 1000);
 				commit("setTimerId", id);
 			}
 		},
