@@ -77,7 +77,6 @@
 
 <script>
 import { gmapApi } from "vue2-google-maps";
-
 export default {
   data() {
     return {
@@ -340,19 +339,58 @@ export default {
   },
   methods: {
     getCurLocation() {
-      console.log("curLocation");
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          position => {
+            this.curLocation = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+          },
+          err => {
+            alert(`Error - Code: ${err.code}, Message: ${err.message}`);
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
     },
-
     setPlace(event) {
       console.log("setPlace");
+      this.place = event;
     },
-
     usePlace() {
-      console.log("usePlace");
+      if (this.place) {
+        console.log(this.place);
+        let newPosition = {
+          lat: this.place.geometry.location.lat(),
+          lng: this.place.geometry.location.lng()
+        };
+        this.curLocation = newPosition;
+      }
     },
-
     updateMarker(event) {
-      console.log("updateMarker");
+      let geocoder = new this.google.maps.Geocoder();
+      geocoder.geocode({ latLng: event.latLng }, (result, status) => {
+        if (status === this.google.maps.GeocoderStatus.OK) {
+          this.$refs.autocomplete.$refs.input.value =
+            result[0].formatted_address;
+        }
+      });
+      this.curLocation = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      };
+    },
+    initAutoComplete() {
+      console.log(this.google);
+      let geocoder = new this.google.maps.Geocoder();
+      geocoder.geocode({ latLng: this.curLocation }, (result, status) => {
+        if (status === this.google.maps.GeocoderStatus.OK) {
+          this.$refs.autocomplete.$refs.input.value =
+            result[0].formatted_address;
+        }
+      });
     }
   },
   created() {
