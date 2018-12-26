@@ -14,26 +14,34 @@
       <!-- End of Title -->
       <!-- Content -->
       <div class="row mt-5">
-        <div class="col-md-8">
+        <div class="col-md-7">
           <GmapMap
-            v-if="curLocation"
-            :center="curLocation"
+            v-if="initPosition"
+            :center="initPosition"
             :zoom="17"
             :options="{
+              disableDefaultUI: true,
               styles: mapStyles
             }"
             map-type-id="roadmap"
-            style="width: 100%; height: 600px"
+            style="width: 100%; height: 500px"
           >
             <GmapMarker
-              :position="curLocation"
+              :position="curPosition"
               :draggable="true"
               :icon="{url: '/img/cur-marker.png'}"
-              @dragend="updateMarker"
+              @dragend="setCurAutocomplete"
+            />
+            <GmapMarker
+              v-if="desPosition"
+              :position="desPosition"
+              :draggable="true"
+              :icon="{url: '/img/des-marker.png'}"
+              @dragend="setDesAutocomplete"
             />
           </GmapMap>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-5">
           <!-- Set location input -->
           <div class="input-group mb-4">
             <div class="input-group-prepend">
@@ -43,12 +51,11 @@
             </div>
             <GmapAutocomplete
               class="form-control"
-              ref="autocomplete"
-              :position.sync="curLocation"
-              @keyup.enter="usePlace"
-              @place_changed="setPlace"
+              ref="curAutocomplete"
+              :bounds="google && new google.maps.LatLngBounds(
+                          new google.maps.LatLng(curPosition.lat, curPosition.lng))"
+              @place_changed="setCurMarker"
             ></GmapAutocomplete>
-            <!-- <input type="text" class="form-control" placeholder="Current Location"> -->
           </div>
           <div class="input-group mb-4">
             <div class="input-group-prepend">
@@ -56,7 +63,13 @@
                 <i class="fas fa-flag"></i>
               </span>
             </div>
-            <input type="text" class="form-control" placeholder="Destination Location">
+            <GmapAutocomplete
+              class="form-control"
+              ref="desAutocomplete"
+              :bounds="google && new google.maps.LatLngBounds(
+                          new google.maps.LatLng(curPosition.lat, curPosition.lng))"
+              @place_changed="setDesMarker"
+            ></GmapAutocomplete>
           </div>
           <!-- End of set location input -->
           <!-- Price -->
@@ -80,9 +93,11 @@ import { gmapApi } from "vue2-google-maps";
 export default {
   data() {
     return {
-      curLocation: null,
-      curMarker: { position: this.curLocation },
-      place: null,
+      initPosition: { lat: 10, lng: 10 },
+      curPosition: null,
+      desPosition: null,
+      curMarker: { position: this.curPosition },
+      desMarker: { position: this.desPosition },
       mapStyles: [
         {
           elementType: "geometry",
@@ -338,14 +353,76 @@ export default {
     google: gmapApi
   },
   methods: {
-    getCurLocation() {
+    setCurMarker(event) {
+      if (event.geometry) {
+        this.curPosition = {
+          lat: event.geometry.location.lat(),
+          lng: event.geometry.location.lng()
+        };
+      }
+    },
+    setDesMarker(event) {
+      if (event.geometry) {
+        this.desPosition = {
+          lat: event.geometry.location.lat(),
+          lng: event.geometry.location.lng()
+        };
+      }
+    },
+    setCurAutocomplete(event) {
+      let geocoder = new this.google.maps.Geocoder();
+      geocoder.geocode({ latLng: event.latLng }, (result, status) => {
+        if (status === this.google.maps.GeocoderStatus.OK) {
+          this.$refs.curAutocomplete.$refs.input.value =
+            result[0].formatted_address;
+        }
+      });
+      this.curPosition = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      };
+    },
+    setDesAutocomplete(event) {
+      let geocoder = new this.google.maps.Geocoder();
+      geocoder.geocode({ latLng: event.latLng }, (result, status) => {
+        if (status === this.google.maps.GeocoderStatus.OK) {
+          this.$refs.desAutocomplete.$refs.input.value =
+            result[0].formatted_address;
+        }
+      });
+      this.desPosition = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      };
+    },
+    initAutocomplete() {
       if (navigator.geolocation) {
+        // Lấy vị trí hiện tại
         navigator.geolocation.getCurrentPosition(
           position => {
-            this.curLocation = {
+            this.curPosition = {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
+            this.initPosition = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            // Thực hiện sau khi đã load xong Google API
+            this.$gmapApiPromiseLazy().then(() => {
+              let latLng = new this.google.maps.LatLng(
+                this.curPosition.lat,
+                this.curPosition.lng
+              );
+              // Lấy địa chỉ tại curPosition
+              let geocoder = new this.google.maps.Geocoder();
+              geocoder.geocode({ latLng }, (result, status) => {
+                if (status === this.google.maps.GeocoderStatus.OK) {
+                  this.$refs.curAutocomplete.$refs.input.value =
+                    result[0].formatted_address;
+                }
+              });
+            });
           },
           err => {
             alert(`Error - Code: ${err.code}, Message: ${err.message}`);
@@ -354,48 +431,10 @@ export default {
       } else {
         alert("Geolocation is not supported by this browser.");
       }
-    },
-    setPlace(event) {
-      console.log("setPlace");
-      this.place = event;
-    },
-    usePlace() {
-      if (this.place) {
-        console.log(this.place);
-        let newPosition = {
-          lat: this.place.geometry.location.lat(),
-          lng: this.place.geometry.location.lng()
-        };
-        this.curLocation = newPosition;
-      }
-    },
-    updateMarker(event) {
-      let geocoder = new this.google.maps.Geocoder();
-      geocoder.geocode({ latLng: event.latLng }, (result, status) => {
-        if (status === this.google.maps.GeocoderStatus.OK) {
-          this.$refs.autocomplete.$refs.input.value =
-            result[0].formatted_address;
-        }
-      });
-      this.curLocation = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng()
-      };
-    },
-    initAutoComplete() {
-      console.log(this.google);
-      let geocoder = new this.google.maps.Geocoder();
-      geocoder.geocode({ latLng: this.curLocation }, (result, status) => {
-        if (status === this.google.maps.GeocoderStatus.OK) {
-          this.$refs.autocomplete.$refs.input.value =
-            result[0].formatted_address;
-        }
-      });
     }
   },
   created() {
-    this.getCurLocation();
-    // setTimeout(this.initAutoComplete(), 2000);
+    this.initAutocomplete();
   }
 };
 </script>
