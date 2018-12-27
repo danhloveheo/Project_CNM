@@ -16,6 +16,7 @@
       <div class="row mt-5">
         <div class="col-md-7">
           <GmapMap
+            ref="map"
             v-if="initPosition"
             :center="initPosition"
             :zoom="17"
@@ -74,16 +75,41 @@
           <!-- End of set location input -->
           <!-- Price -->
           <div class="row border m-0 price-tag">
-            <div class="col">
-              <div class="text-center price-counter">15.50 $</div>
-              <div class="text-center mb-2 font-weight-bold">CASH</div>
-            </div>
+            <transition
+              enter-active-class="animated fadeIn faster"
+              leave-active-class="animated fadeOut faster"
+              mode="out-in"
+            >
+              <div class="col-md-12" v-if="priceStatus === 'calculated' " key="calculated">
+                <div class="text-center price-counter">15.50 $</div>
+                <div class="text-center mb-2 font-weight-bold">
+                  <span class="mr-3">
+                    <i class="fas fa-route mr-1"></i>
+                    8.3 km
+                  </span>
+                  <span>
+                    <i class="far fa-clock"></i>
+                    26 mins
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-12" v-if="priceStatus === 'calculating'" key="calculating">
+                <div class="text-center price-counter">&nbsp;</div>
+                <div class="text-center mb-2 font-weight-bold">&nbsp;</div>
+                <div class="loader-wrapper">
+                  <div class="loader"></div>
+                </div>
+              </div>
+            </transition>
           </div>
+
           <!-- End of price -->
           <button class="btn btn-lg btn-primary-custom btn-block mt-4">Confirm Pickup</button>
         </div>
       </div>
       <!-- End of content -->
+      <button class="btn btn-primary-custom" @click="priceStatus = 'calculated' "></button>
+      <button class="btn btn-primary-custom" @click="priceStatus = 'calculating' "></button>
     </div>
   </section>
 </template>
@@ -98,6 +124,7 @@ export default {
       desPosition: null,
       curMarker: { position: this.curPosition },
       desMarker: { position: this.desPosition },
+      priceStatus: "init",
       mapStyles: [
         {
           elementType: "geometry",
@@ -349,6 +376,48 @@ export default {
       ]
     };
   },
+  watch: {
+    curPosition(value) {
+      this.curPosition = value;
+      if (this.desPosition) {
+        let bounds = new this.google.maps.LatLngBounds();
+        let loc;
+        loc = new this.google.maps.LatLng(
+          this.curPosition.lat,
+          this.curPosition.lng
+        );
+        bounds.extend(loc);
+        loc = new this.google.maps.LatLng(
+          this.desPosition.lat,
+          this.desPosition.lng
+        );
+        bounds.extend(loc);
+
+        // Auto zoom & center
+        this.$refs.map.fitBounds(bounds);
+        this.$refs.map.panToBounds(bounds);
+      }
+    },
+    desPosition(value) {
+      this.desPosition = value;
+      let bounds = new this.google.maps.LatLngBounds();
+      let loc;
+      loc = new this.google.maps.LatLng(
+        this.curPosition.lat,
+        this.curPosition.lng
+      );
+      bounds.extend(loc);
+      loc = new this.google.maps.LatLng(
+        this.desPosition.lat,
+        this.desPosition.lng
+      );
+      bounds.extend(loc);
+
+      // Auto zoom & center
+      this.$refs.map.fitBounds(bounds);
+      this.$refs.map.panToBounds(bounds);
+    }
+  },
   computed: {
     google: gmapApi
   },
@@ -438,3 +507,90 @@ export default {
   }
 };
 </script>
+
+<style>
+.loader-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+
+.loader {
+  display: block;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  width: 100px;
+  height: 100px;
+  margin: -50px 0 0 -50px;
+  border-radius: 50% !important;
+  border: 3px solid transparent;
+  border-top-color: #63a599;
+  -webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+  animation: spin 2s linear infinite;
+}
+
+.loader:before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #63a599;
+  -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+  animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+}
+
+.loader:after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  bottom: 15px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #63a599;
+  -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+  animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg); /* Chrome, Opera 15+, Safari 3.1+ */
+    -ms-transform: rotate(0deg); /* IE 9 */
+    transform: rotate(0deg); /* Firefox 16+, IE 10+, Opera */
+  }
+  100% {
+    -webkit-transform: rotate(360deg); /* Chrome, Opera 15+, Safari 3.1+ */
+    -ms-transform: rotate(360deg); /* IE 9 */
+    transform: rotate(360deg); /* Firefox 16+, IE 10+, Opera */
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg); /* Chrome, Opera 15+, Safari 3.1+ */
+    -ms-transform: rotate(0deg); /* IE 9 */
+    transform: rotate(0deg); /* Firefox 16+, IE 10+, Opera */
+  }
+  100% {
+    -webkit-transform: rotate(360deg); /* Chrome, Opera 15+, Safari 3.1+ */
+    -ms-transform: rotate(360deg); /* IE 9 */
+    transform: rotate(360deg); /* Firefox 16+, IE 10+, Opera */
+  }
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+</style>

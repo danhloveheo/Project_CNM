@@ -286,7 +286,6 @@ body {
 	font-weight: 900;
 }
 
-#book-car .price-tag:hover,
 #points-interest .row.item:hover {
 	background-color: #63a599;
 	color: #fff;
