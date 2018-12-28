@@ -17,7 +17,7 @@
         <div class="col-md-7">
           <GmapMap
             ref="map"
-            v-if="initPosition"
+            v-if="curPosition"
             :center="initPosition"
             :zoom="17"
             :options="{
@@ -81,15 +81,15 @@
               mode="out-in"
             >
               <div class="col-md-12" v-if="priceStatus === 'calculated' " key="calculated">
-                <div class="text-center price-counter">15.50 $</div>
+                <div class="text-center price-counter">{{price}} $</div>
                 <div class="text-center mb-2 font-weight-bold">
                   <span class="mr-3">
                     <i class="fas fa-route mr-1"></i>
-                    8.3 km
+                    {{distance}}
                   </span>
                   <span>
                     <i class="far fa-clock"></i>
-                    26 mins
+                    {{duration}}
                   </span>
                 </div>
               </div>
@@ -116,6 +116,7 @@
 
 <script>
 import { gmapApi } from "vue2-google-maps";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -125,6 +126,9 @@ export default {
       curMarker: { position: this.curPosition },
       desMarker: { position: this.desPosition },
       priceStatus: "init",
+      price: 0,
+      distance: 0,
+      duration: 0,
       mapStyles: [
         {
           elementType: "geometry",
@@ -147,15 +151,6 @@ export default {
           stylers: [
             {
               color: "#f5f1e6"
-            }
-          ]
-        },
-        {
-          featureType: "administrative",
-          elementType: "geometry",
-          stylers: [
-            {
-              visibility: "off"
             }
           ]
         },
@@ -197,15 +192,16 @@ export default {
         },
         {
           featureType: "poi",
+          elementType: "geometry",
           stylers: [
             {
-              visibility: "off"
+              color: "#dfd2ae"
             }
           ]
         },
         {
           featureType: "poi",
-          elementType: "geometry",
+          elementType: "labels.text",
           stylers: [
             {
               color: "#dfd2ae"
@@ -218,6 +214,14 @@ export default {
           stylers: [
             {
               color: "#93817c"
+            }
+          ]
+        },
+        {
+          featureType: "poi.business",
+          stylers: [
+            {
+              visibility: "off"
             }
           ]
         },
@@ -324,7 +328,7 @@ export default {
           elementType: "geometry",
           stylers: [
             {
-              color: "#dfd2ae"
+              visibility: "off"
             }
           ]
         },
@@ -379,43 +383,17 @@ export default {
   watch: {
     curPosition(value) {
       this.curPosition = value;
-      if (this.desPosition) {
-        let bounds = new this.google.maps.LatLngBounds();
-        let loc;
-        loc = new this.google.maps.LatLng(
-          this.curPosition.lat,
-          this.curPosition.lng
-        );
-        bounds.extend(loc);
-        loc = new this.google.maps.LatLng(
-          this.desPosition.lat,
-          this.desPosition.lng
-        );
-        bounds.extend(loc);
 
-        // Auto zoom & center
-        this.$refs.map.fitBounds(bounds);
-        this.$refs.map.panToBounds(bounds);
+      if (this.desPosition) {
+        this.setBounds();
+        this.fetchDistance();
       }
     },
     desPosition(value) {
       this.desPosition = value;
-      let bounds = new this.google.maps.LatLngBounds();
-      let loc;
-      loc = new this.google.maps.LatLng(
-        this.curPosition.lat,
-        this.curPosition.lng
-      );
-      bounds.extend(loc);
-      loc = new this.google.maps.LatLng(
-        this.desPosition.lat,
-        this.desPosition.lng
-      );
-      bounds.extend(loc);
 
-      // Auto zoom & center
-      this.$refs.map.fitBounds(bounds);
-      this.$refs.map.panToBounds(bounds);
+      this.setBounds();
+      this.fetchDistance();
     }
   },
   computed: {
@@ -428,6 +406,10 @@ export default {
           lat: event.geometry.location.lat(),
           lng: event.geometry.location.lng()
         };
+
+        if (!this.desPosition) {
+          this.initPosition = this.curPosition;
+        }
       }
     },
     setDesMarker(event) {
@@ -463,6 +445,48 @@ export default {
         lat: event.latLng.lat(),
         lng: event.latLng.lng()
       };
+    },
+
+    setBounds() {
+      let bounds = new this.google.maps.LatLngBounds();
+      let loc;
+      loc = new this.google.maps.LatLng(
+        this.curPosition.lat,
+        this.curPosition.lng
+      );
+      bounds.extend(loc);
+      loc = new this.google.maps.LatLng(
+        this.desPosition.lat,
+        this.desPosition.lng
+      );
+      bounds.extend(loc);
+
+      // Auto zoom & center
+      this.$refs.map.fitBounds(bounds);
+      this.$refs.map.panToBounds(bounds);
+    },
+
+    fetchDistance() {
+      this.priceStatus = "calculating";
+      axios
+        .post("/rider/distance", {
+          curPosition: this.curPosition,
+          desPosition: this.desPosition
+        })
+        .then(res => {
+          this.price =
+            (
+              Math.round(
+                (res.data.distance.value / 1000) * 2 * Math.pow(10, 2)
+              ) / Math.pow(10, 2)
+            ).toFixed(1) + "0";
+          this.distance = res.data.distance.text;
+          this.duration = res.data.duration.text;
+          this.priceStatus = "calculated";
+        })
+        .catch(err => {
+          console.log(err.response.data);
+        });
     },
     initAutocomplete() {
       if (navigator.geolocation) {
