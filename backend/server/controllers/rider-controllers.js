@@ -4,7 +4,7 @@ const googleMapsClient = require("@google/maps").createClient({
 	Promise: Promise
 });
 
-function calPrice(req, res) {
+function distance(req, res) {
 	let body = _.pick(req.body, ["curPosition", "desPosition"]);
 
 	if (body.curPosition && body.desPosition) {
@@ -15,7 +15,10 @@ function calPrice(req, res) {
 			})
 			.asPromise()
 			.then(result => {
-				res.status(400).send(result);
+				res.status(200).send({
+					distance: result.json.rows[0].elements[0].distance,
+					duration: result.json.rows[0].elements[0].duration
+				});
 			})
 			.catch(err => {
 				res.status(400).send({
@@ -31,4 +34,4 @@ function calPrice(req, res) {
 	}
 }
 
-module.exports = { calPrice };
+module.exports = { distance };
