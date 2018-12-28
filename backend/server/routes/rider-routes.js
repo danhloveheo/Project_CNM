@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const { calPrice } = require("./../controllers/rider-controllers");
+const { distance } = require("./../controllers/rider-controllers");
 
-router.post("/cal-price", calPrice);
+router.post("/distance", distance);
 
 module.exports = router;
