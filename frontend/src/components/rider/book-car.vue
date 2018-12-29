@@ -117,6 +117,7 @@
 <script>
 import { gmapApi } from "vue2-google-maps";
 import axios from "axios";
+
 export default {
   data() {
     return {
@@ -204,7 +205,7 @@ export default {
           elementType: "labels.text",
           stylers: [
             {
-              color: "#dfd2ae"
+              visibility: "off"
             }
           ]
         },
@@ -328,7 +329,7 @@ export default {
           elementType: "geometry",
           stylers: [
             {
-              visibility: "off"
+              color: "#dfd2ae"
             }
           ]
         },
@@ -420,6 +421,7 @@ export default {
         };
       }
     },
+
     setCurAutocomplete(event) {
       let geocoder = new this.google.maps.Geocoder();
       geocoder.geocode({ latLng: event.latLng }, (result, status) => {
@@ -433,6 +435,7 @@ export default {
         lng: event.latLng.lng()
       };
     },
+
     setDesAutocomplete(event) {
       let geocoder = new this.google.maps.Geocoder();
       geocoder.geocode({ latLng: event.latLng }, (result, status) => {
@@ -469,7 +472,7 @@ export default {
     fetchDistance() {
       this.priceStatus = "calculating";
       axios
-        .post("/rider/distance", {
+        .post("/places/distance", {
           curPosition: this.curPosition,
           desPosition: this.desPosition
         })
@@ -488,6 +491,7 @@ export default {
           console.log(err.response.data);
         });
     },
+
     initAutocomplete() {
       if (navigator.geolocation) {
         // Lấy vị trí hiện tại
@@ -501,12 +505,14 @@ export default {
               lat: position.coords.latitude,
               lng: position.coords.longitude
             };
+
             // Thực hiện sau khi đã load xong Google API
             this.$gmapApiPromiseLazy().then(() => {
               let latLng = new this.google.maps.LatLng(
                 this.curPosition.lat,
                 this.curPosition.lng
               );
+
               // Lấy địa chỉ tại curPosition
               let geocoder = new this.google.maps.Geocoder();
               geocoder.geocode({ latLng }, (result, status) => {

@@ -249,16 +249,14 @@ export default {
         lastName: "",
         email: "",
         password: "",
-        confirmPassword: "",
-        role: "rider"
+        confirmPassword: ""
       },
       driver: {
         firstName: "",
         lastName: "",
         email: "",
         password: "",
-        confirmPassword: "",
-        role: "driver"
+        confirmPassword: ""
       }
     };
   },
@@ -277,7 +275,7 @@ export default {
         lastName: this.rider.lastName,
         email: this.rider.email,
         password: this.rider.password,
-        role: this.rider.role
+        role: "rider"
       };
 
       this.resetInput();
@@ -291,7 +289,7 @@ export default {
         lastName: this.driver.lastName,
         email: this.driver.email,
         password: this.driver.password,
-        role: this.driver.role
+        role: "driver"
       };
 
       this.resetInput();
