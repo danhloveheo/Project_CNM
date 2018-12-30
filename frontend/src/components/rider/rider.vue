@@ -4,8 +4,8 @@
     leave-active-class="animated fadeOut faster"
     mode="out-in"
   >
-    <book-car v-if="status==='init'"></book-car>
-    <waiting v-if="status==='waiting'"></waiting>
+    <book-car v-if="riderStatus==='init'"></book-car>
+    <waiting v-if="riderStatus==='waiting'"></waiting>
   </transition>
 </template>
 
@@ -19,14 +19,19 @@ export default {
       status: "init"
     };
   },
+  computed: {
+    riderStatus() {
+      return this.$store.getters.getRiderStatus;
+    }
+  },
   components: {
     "book-car": bookCar,
     waiting: waiting
   },
   mounted() {
-    setTimeout(() => {
-      this.status = "waiting";
-    }, 3000);
+    // setTimeout(() => {
+    //   this.status = "waiting";
+    // }, 3000);
   }
 };
 </script>

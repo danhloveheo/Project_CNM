@@ -4,6 +4,7 @@ import BootstrapVue from "bootstrap-vue";
 import VueRouter from "vue-router";
 import axios from "axios";
 import * as VueGoogleMaps from "vue2-google-maps";
+import VueSocketIO from "vue-socket.io";
 
 import { routes } from "./routes";
 import { store } from "./store/store";
@@ -17,6 +18,12 @@ Vue.use(VueGoogleMaps, {
 		libraries: "places"
 	}
 });
+Vue.use(
+	new VueSocketIO({
+		debug: true,
+		connection: "http://localhost:3000"
+	})
+);
 
 axios.defaults.baseURL = "http://localhost:3000";
 

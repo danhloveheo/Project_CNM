@@ -104,7 +104,11 @@
           </div>
 
           <!-- End of price -->
-          <button class="btn btn-lg btn-primary-custom btn-block mt-4">Confirm Pickup</button>
+          <button
+            class="btn btn-lg btn-primary-custom btn-block mt-4"
+            v-if="curPosition && desPosition"
+            @click="confirmPickup"
+          >Confirm Pickup</button>
         </div>
       </div>
       <!-- End of content -->
@@ -489,7 +493,16 @@ export default {
           console.log(err.response.data);
         });
     },
-
+    confirmPickup() {
+      if (this.curPosition && this.desPosition) {
+        this.$store.commit("changeRiderStatus", "waiting");
+        this.$socket.emit("riderRequest", {
+          id: this.$socket.id,
+          curPosition: this.curPosition,
+          desPosition: this.desPosition
+        });
+      }
+    },
     initAutocomplete() {
       if (navigator.geolocation) {
         // Lấy vị trí hiện tại
