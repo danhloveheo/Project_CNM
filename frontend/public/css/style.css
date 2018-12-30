@@ -126,13 +126,6 @@ body {
 	outline: none;
 }
 
-#motto {
-	position: absolute;
-	bottom: 0px;
-	font-size: 30px;
-	color: #fff;
-}
-
 /* SERVICES */
 #index-services .service:hover {
 	background-color: #63a599;

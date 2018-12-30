@@ -108,8 +108,6 @@
         </div>
       </div>
       <!-- End of content -->
-      <button class="btn btn-primary-custom" @click="priceStatus = 'calculated' "></button>
-      <button class="btn btn-primary-custom" @click="priceStatus = 'calculating' "></button>
     </div>
   </section>
 </template>
@@ -538,7 +536,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .loader-wrapper {
   position: absolute;
   top: 0;
