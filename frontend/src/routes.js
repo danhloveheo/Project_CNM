@@ -1,5 +1,6 @@
 import Home from "./components/home/home.vue";
 import Rider from "./components/rider/rider.vue";
+import Driver from "./components/driver/driver-init.vue";
 
 export const routes = [
 	{
@@ -11,5 +12,10 @@ export const routes = [
 		path: "/rider",
 		name: "rider",
 		component: Rider
+	},
+	{
+		path: "/driver",
+		name: "driver",
+		component: Driver
 	}
 ];

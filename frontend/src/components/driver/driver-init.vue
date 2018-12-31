@@ -1,12 +1,11 @@
 <template>
-  <!-- BOOK CAR SECTION -->
-  <section id="book-car">
+  <section id="driver-init">
     <!-- Title -->
     <div class="container my-5">
       <div class="row">
         <div class="col">
           <div class="page-sub-title text-center">
-            <h2 class>Rider</h2>
+            <h2 class>Driver</h2>
             <div class="line"></div>
           </div>
         </div>
@@ -33,16 +32,28 @@
               :icon="{url: '/img/cur-marker.png'}"
               @dragend="setCurAutocomplete"
             />
-            <GmapMarker
-              v-if="desPosition"
-              :position="desPosition"
-              :draggable="true"
-              :icon="{url: '/img/des-marker.png'}"
-              @dragend="setDesAutocomplete"
-            />
           </GmapMap>
         </div>
         <div class="col-md-5">
+          <!-- Status switch -->
+          <div class="row mr-0">
+            <toggle-button
+              :color="{
+            checked: '#63a599',
+            unchecked: '#db5959'
+            }"
+              :labels="{
+            checked: 'Available',
+            unchecked: 'Busy'
+            }"
+              width="130"
+              height="40"
+              class="mb-4 ml-auto"
+              fontSize="15"
+              v-model="driverStatus"
+            />
+          </div>
+          <!-- End of status switch -->
           <!-- Set location input -->
           <div class="input-group mb-4">
             <div class="input-group-prepend">
@@ -58,57 +69,7 @@
               @place_changed="setCurMarker"
             ></GmapAutocomplete>
           </div>
-          <div class="input-group mb-4">
-            <div class="input-group-prepend">
-              <span class="input-group-text">
-                <i class="fas fa-flag"></i>
-              </span>
-            </div>
-            <GmapAutocomplete
-              class="form-control"
-              ref="desAutocomplete"
-              :bounds="google && new google.maps.LatLngBounds(
-                          new google.maps.LatLng(curPosition.lat, curPosition.lng))"
-              @place_changed="setDesMarker"
-            ></GmapAutocomplete>
-          </div>
           <!-- End of set location input -->
-          <!-- Price -->
-          <div class="row border m-0 price-tag">
-            <transition
-              enter-active-class="animated fadeIn faster"
-              leave-active-class="animated fadeOut faster"
-              mode="out-in"
-            >
-              <div class="col-md-12" v-if="priceStatus === 'calculated' " key="calculated">
-                <div class="text-center price-counter">{{price}} $</div>
-                <div class="text-center mb-2 font-weight-bold">
-                  <span class="mr-3">
-                    <i class="fas fa-route mr-1"></i>
-                    {{distance}}
-                  </span>
-                  <span>
-                    <i class="far fa-clock"></i>
-                    {{duration}}
-                  </span>
-                </div>
-              </div>
-              <div class="col-md-12" v-if="priceStatus === 'calculating'" key="calculating">
-                <div class="text-center price-counter">&nbsp;</div>
-                <div class="text-center mb-2 font-weight-bold">&nbsp;</div>
-                <div class="loader-wrapper">
-                  <div class="loader"></div>
-                </div>
-              </div>
-            </transition>
-          </div>
-
-          <!-- End of price -->
-          <button
-            class="btn btn-lg btn-primary-custom btn-block mt-4"
-            v-if="curPosition && desPosition"
-            @click="bookCar"
-          >Book Car</button>
         </div>
       </div>
       <!-- End of content -->
@@ -118,20 +79,14 @@
 
 <script>
 import { gmapApi } from "vue2-google-maps";
-import axios from "axios";
 
 export default {
   data() {
     return {
       initPosition: { lat: 10, lng: 10 },
       curPosition: null,
-      desPosition: null,
       curMarker: { position: this.curPosition },
-      desMarker: { position: this.desPosition },
-      priceStatus: "init",
-      price: 0,
-      distance: 0,
-      duration: 0,
+      driverStatus: true,
       mapStyles: [
         {
           elementType: "geometry",
@@ -384,19 +339,13 @@ export default {
     };
   },
   watch: {
-    curPosition(value) {
-      this.curPosition = value;
-
-      if (this.desPosition) {
-        this.setBounds();
-        this.fetchDistance();
+    driverStatus(value) {
+      this.driverStatus = value;
+      if (value) {
+        this.$socket.emit("driverAvailable");
+      } else {
+        this.$socket.emit("driverBusy");
       }
-    },
-    desPosition(value) {
-      this.desPosition = value;
-
-      this.setBounds();
-      this.fetchDistance();
     }
   },
   computed: {
@@ -415,15 +364,6 @@ export default {
         }
       }
     },
-    setDesMarker(event) {
-      if (event.geometry) {
-        this.desPosition = {
-          lat: event.geometry.location.lat(),
-          lng: event.geometry.location.lng()
-        };
-      }
-    },
-
     setCurAutocomplete(event) {
       let geocoder = new this.google.maps.Geocoder();
       geocoder.geocode({ latLng: event.latLng }, (result, status) => {
@@ -436,71 +376,6 @@ export default {
         lat: event.latLng.lat(),
         lng: event.latLng.lng()
       };
-    },
-
-    setDesAutocomplete(event) {
-      let geocoder = new this.google.maps.Geocoder();
-      geocoder.geocode({ latLng: event.latLng }, (result, status) => {
-        if (status === this.google.maps.GeocoderStatus.OK) {
-          this.$refs.desAutocomplete.$refs.input.value =
-            result[0].formatted_address;
-        }
-      });
-      this.desPosition = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng()
-      };
-    },
-
-    setBounds() {
-      let bounds = new this.google.maps.LatLngBounds();
-      let loc;
-      loc = new this.google.maps.LatLng(
-        this.curPosition.lat,
-        this.curPosition.lng
-      );
-      bounds.extend(loc);
-      loc = new this.google.maps.LatLng(
-        this.desPosition.lat,
-        this.desPosition.lng
-      );
-      bounds.extend(loc);
-
-      // Auto zoom & center
-      this.$refs.map.fitBounds(bounds);
-      this.$refs.map.panToBounds(bounds);
-    },
-
-    fetchDistance() {
-      this.priceStatus = "calculating";
-      axios
-        .post("/places/distance", {
-          curPosition: this.curPosition,
-          desPosition: this.desPosition
-        })
-        .then(res => {
-          this.price =
-            (
-              Math.round(
-                (res.data.distance.value / 1000) * 2 * Math.pow(10, 2)
-              ) / Math.pow(10, 2)
-            ).toFixed(1) + "0";
-          this.distance = res.data.distance.text;
-          this.duration = res.data.duration.text;
-          this.priceStatus = "calculated";
-        })
-        .catch(err => {
-          console.log(err.response.data);
-        });
-    },
-    bookCar() {
-      if (this.curPosition && this.desPosition) {
-        this.$store.commit("changeRiderStatus", "waiting");
-        this.$socket.emit("riderRequest", {
-          curPosition: this.curPosition,
-          desPosition: this.desPosition
-        });
-      }
     },
     initAutocomplete() {
       if (navigator.geolocation) {
@@ -544,93 +419,20 @@ export default {
   },
   created() {
     this.initAutocomplete();
+
+    this.$socket.emit("driverInit", {
+      curPosition: this.curPosition
+    });
   }
 };
 </script>
 
-<style scoped>
-.loader-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
+<style>
+.v-switch-core {
+  border-radius: 20px !important;
 }
 
-.loader {
-  display: block;
-  position: relative;
-  left: 50%;
-  top: 50%;
-  width: 100px;
-  height: 100px;
-  margin: -50px 0 0 -50px;
-  border-radius: 50% !important;
-  border: 3px solid transparent;
-  border-top-color: #63a599;
-  -webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
-  animation: spin 2s linear infinite;
-}
-
-.loader:before {
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  border-top-color: #63a599;
-  -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
-  animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
-}
-
-.loader:after {
-  content: "";
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
-  bottom: 15px;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  border-top-color: #63a599;
-  -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
-  animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
-}
-
-@-webkit-keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg); /* Chrome, Opera 15+, Safari 3.1+ */
-    -ms-transform: rotate(0deg); /* IE 9 */
-    transform: rotate(0deg); /* Firefox 16+, IE 10+, Opera */
-  }
-  100% {
-    -webkit-transform: rotate(360deg); /* Chrome, Opera 15+, Safari 3.1+ */
-    -ms-transform: rotate(360deg); /* IE 9 */
-    transform: rotate(360deg); /* Firefox 16+, IE 10+, Opera */
-  }
-}
-@keyframes spin {
-  0% {
-    -webkit-transform: rotate(0deg); /* Chrome, Opera 15+, Safari 3.1+ */
-    -ms-transform: rotate(0deg); /* IE 9 */
-    transform: rotate(0deg); /* Firefox 16+, IE 10+, Opera */
-  }
-  100% {
-    -webkit-transform: rotate(360deg); /* Chrome, Opera 15+, Safari 3.1+ */
-    -ms-transform: rotate(360deg); /* IE 9 */
-    transform: rotate(360deg); /* Firefox 16+, IE 10+, Opera */
-  }
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
-  opacity: 0;
+.v-switch-button {
+  border-radius: 100% !important;
 }
 </style>

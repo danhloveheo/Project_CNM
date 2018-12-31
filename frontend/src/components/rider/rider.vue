@@ -14,11 +14,6 @@ import bookCar from "./book-car.vue";
 import waiting from "./rider-waiting.vue";
 
 export default {
-  data() {
-    return {
-      status: "init"
-    };
-  },
   computed: {
     riderStatus() {
       return this.$store.getters.getRiderStatus;

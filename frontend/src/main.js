@@ -1,6 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import BootstrapVue from "bootstrap-vue";
+import ToggleButton from "vue-js-toggle-button";
 import VueRouter from "vue-router";
 import axios from "axios";
 import * as VueGoogleMaps from "vue2-google-maps";
@@ -12,6 +13,7 @@ import { store } from "./store/store";
 Vue.config.productionTip = false;
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
+Vue.use(ToggleButton);
 Vue.use(VueGoogleMaps, {
 	load: {
 		key: "AIzaSyCp3QauVfDwqyT7kwndhlTi-ot6kwAu_2E",
