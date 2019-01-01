@@ -37,6 +37,7 @@
         <div class="col-md-5">
           <!-- Status switch -->
           <div class="row mr-0">
+            <!-- prettier-ignore-attribute -->
             <toggle-button
               :color="{
             checked: '#63a599',
@@ -46,10 +47,10 @@
             checked: 'Available',
             unchecked: 'Busy'
             }"
-              width="130"
-              height="40"
+              :width="130"
+              :height="40"
               class="mb-4 ml-auto"
-              fontSize="15"
+              :fontSize="15"
               v-model="driverStatus"
             />
           </div>
