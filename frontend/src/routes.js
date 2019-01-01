@@ -1,6 +1,6 @@
 import Home from "./components/home/home.vue";
 import Rider from "./components/rider/rider.vue";
-import Driver from "./components/driver/driver-init.vue";
+import Driver from "./components/driver/driver.vue";
 
 export const routes = [
 	{
