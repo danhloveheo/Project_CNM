@@ -6,12 +6,14 @@
   >
     <book-car v-if="riderStatus==='init'"></book-car>
     <waiting v-if="riderStatus==='waiting'"></waiting>
+    <request-accepted v-if="riderStatus==='request accepted'"></request-accepted>
   </transition>
 </template>
 
 <script>
 import bookCar from "./book-car.vue";
 import waiting from "./rider-waiting.vue";
+import requestAccepted from "./rider-request-accepted.vue";
 
 export default {
   computed: {
@@ -21,7 +23,8 @@ export default {
   },
   components: {
     "book-car": bookCar,
-    waiting: waiting
+    waiting: waiting,
+    "request-accepted": requestAccepted
   },
   mounted() {
     // setTimeout(() => {
