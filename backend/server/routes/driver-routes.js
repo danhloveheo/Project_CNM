@@ -9,6 +9,18 @@ module.exports = function(io) {
 		socket.on("riderRequest", data => {
 			console.log("New rider request", socket.id);
 		});
+		socket.on("driverInit", data => {
+			console.log("New driver online", socket.id);
+		});
+		socket.on("driverBusy", () => {
+			console.log("Driver status changed to busy", socket.id);
+		});
+		socket.on("driverAvailable", () => {
+			console.log("Driver status changed to available", socket.id);
+		});
+		socket.on("disconnect", data => {
+			console.log("Client disconnected", socket.id);
+		});
 	});
 	return router;
 };
