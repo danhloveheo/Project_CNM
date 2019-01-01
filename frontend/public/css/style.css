@@ -14,6 +14,12 @@ body {
 	color: #63a599;
 }
 
+.btn-primary-outline-custom {
+	background-color: #63a599;
+	border: 1px solid #fff;
+	color: #fff;
+}
+
 .btn-primary-custom:hover,
 .btn-primary-custom:active,
 .btn-primary-custom:focus {
@@ -21,6 +27,15 @@ body {
 	border: 1px solid #63a599;
 	box-shadow: none !important;
 	color: #fff;
+}
+
+.btn-primary-outline-custom:hover,
+.btn-primary-outline-custom:active,
+.btn-primary-outline-custom:focus {
+	background-color: #fff;
+	border: 1px solid #fff;
+	box-shadow: none !important;
+	color: #63a599;
 }
 
 .modal-open {

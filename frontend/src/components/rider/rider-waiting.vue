@@ -6,7 +6,7 @@
 
 <style scoped>
 .loader-container {
-  background: #f4f1e3;
+  background: #63a599;
   position: absolute;
   top: 0;
   left: 0;
@@ -28,7 +28,7 @@
   font-family: helvetica, arial, sans-serif;
   text-transform: uppercase;
   font-weight: 900;
-  color: #63a599;
+  color: #fff;
   letter-spacing: 0.2em;
 }
 .loader::before,
@@ -37,7 +37,7 @@
   display: block;
   width: 15px;
   height: 15px;
-  background: #63a599;
+  background: #fff;
   position: absolute;
   -webkit-animation: load 0.7s infinite alternate ease-in-out;
   animation: load 0.7s infinite alternate ease-in-out;
