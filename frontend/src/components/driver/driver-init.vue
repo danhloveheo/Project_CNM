@@ -408,6 +408,11 @@ export default {
                 }
               });
             });
+
+            // Emit event tới server sau khi đã có curPosition
+            this.$socket.emit("driverInit", {
+              curPosition: this.curPosition
+            });
           },
           err => {
             alert(`Error - Code: ${err.code}, Message: ${err.message}`);
@@ -418,12 +423,8 @@ export default {
       }
     }
   },
-  created() {
+  mounted() {
     this.initAutocomplete();
-
-    this.$socket.emit("driverInit", {
-      curPosition: this.curPosition
-    });
   }
 };
 </script>

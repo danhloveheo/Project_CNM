@@ -1,7 +1,7 @@
 <template>
   <transition enter-active-class="animated fadeIn" leave-active-class="animated fadeOut">
     <driver-init v-if="driverStatus==='init'"></driver-init>
-    <new-request v-if="driverStatus==='new request'"></new-request>
+    <new-request v-if="driverStatus==='newRequest'"></new-request>
   </transition>
 </template>
 
@@ -18,6 +18,12 @@ export default {
   components: {
     "driver-init": driverInit,
     "new-request": newRequest
+  },
+  mounted() {
+    this.sockets.subscribe("newRequest", data => {
+      console.log("new request");
+      this.$store.commit("changeDriverStatus", "newRequest");
+    });
   }
 };
 </script>
