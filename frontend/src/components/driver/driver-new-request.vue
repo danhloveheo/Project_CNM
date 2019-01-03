@@ -4,17 +4,45 @@
     <div class="pickup-info">
       <div class="pickup-address">
         <p>
-          Chợ Phạm Văn Hai, Sạp K/146-148, Quận Tân Bình... &nbsp;
+          <i class="fas fa-map-marker-alt"></i>
+          {{this.requestInfo.curAddress}}
+        </p>
+        <p>
           <i class="fas fa-route mr-1"></i> 1.5 km
         </p>
       </div>
       <div class="action">
-        <button class="btn btn-primary-outline-custom">Accept</button>
-        <button class="btn btn-primary-outline-custom">Decline</button>
+        <button class="btn btn-primary-outline-custom" @click="driverAccepted">Accept</button>
+        <button class="btn btn-primary-outline-custom" @click="driverRejected">Decline</button>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  computed: {
+    requestInfo() {
+      return this.$store.getters.getRequestInfo;
+    }
+  },
+  methods: {
+    driverAccepted() {
+      this.$socket.emit("driverAccepted", {
+        rider: this.requestInfo,
+        driver: {
+          fullName: this.$store.getters.fullName,
+          curPosition: this.$store.getters.getCurPosition
+        }
+      });
+    },
+    driverRejected() {
+      this.$socket.emit("driverRejected", { rider: this.requestInfo });
+      this.$store.commit("changeDriverStatus", "init");
+    }
+  }
+};
+</script>
 
 <style scoped>
 .loader-container {

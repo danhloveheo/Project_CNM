@@ -21,7 +21,7 @@ export default {
   },
   mounted() {
     this.sockets.subscribe("newRequest", data => {
-      console.log("new request");
+      this.$store.commit("changeRequestInfo", data);
       this.$store.commit("changeDriverStatus", "newRequest");
     });
   }

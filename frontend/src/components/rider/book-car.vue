@@ -498,7 +498,9 @@ export default {
         this.$store.commit("changeRiderStatus", "waiting");
         this.$socket.emit("riderRequest", {
           curPosition: this.curPosition,
-          desPosition: this.desPosition
+          desPosition: this.desPosition,
+          curAddress: this.$refs.curAutocomplete.$refs.input.value,
+          desAddress: this.$refs.desAutocomplete.$refs.input.value
         });
       }
     },

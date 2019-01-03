@@ -340,6 +340,10 @@ export default {
     };
   },
   watch: {
+    curPosition(value) {
+      this.curPosition = value;
+      this.$store.commit("changeCurPosition", value);
+    },
     driverStatus(value) {
       this.driverStatus = value;
       if (value) {

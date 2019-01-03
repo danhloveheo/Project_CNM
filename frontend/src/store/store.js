@@ -7,7 +7,11 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
 	state: {
 		riderStatus: "init",
-		driverStatus: "init"
+		driverStatus: "init",
+		requestInfo: null,
+		driverInfo: null,
+		curPosition: null,
+		desPosition: null
 	},
 	getters: {
 		getRiderStatus(state) {
@@ -15,6 +19,18 @@ export const store = new Vuex.Store({
 		},
 		getDriverStatus(state) {
 			return state.driverStatus;
+		},
+		getRequestInfo(state) {
+			return state.requestInfo;
+		},
+		getDriverInfo(state) {
+			return state.driverInfo;
+		},
+		getCurPosition(state) {
+			return state.curPosition;
+		},
+		getDesPosition(state) {
+			return state.desPosition;
 		}
 	},
 	mutations: {
@@ -23,6 +39,18 @@ export const store = new Vuex.Store({
 		},
 		changeDriverStatus(state, payload) {
 			state.driverStatus = payload;
+		},
+		changeRequestInfo(state, payload) {
+			state.requestInfo = payload;
+		},
+		changeDriverInfo(state, payload) {
+			state.driverInfo = payload;
+		},
+		changeCurPosition(state, payload) {
+			state.curPosition = payload;
+		},
+		changeDesPosition(state, payload) {
+			state.desPosition = payload;
 		}
 	},
 	actions: {},

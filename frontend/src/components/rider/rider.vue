@@ -6,7 +6,7 @@
   >
     <book-car v-if="riderStatus==='init'"></book-car>
     <waiting v-if="riderStatus==='waiting'"></waiting>
-    <request-accepted v-if="riderStatus==='request accepted'"></request-accepted>
+    <request-accepted v-if="riderStatus==='requestAccepted'"></request-accepted>
   </transition>
 </template>
 
@@ -27,9 +27,17 @@ export default {
     "request-accepted": requestAccepted
   },
   mounted() {
-    // setTimeout(() => {
-    //   this.status = "waiting";
-    // }, 3000);
+    this.sockets.subscribe("requestAccepted", data => {
+      this.$store.commit("changeDriverInfo", data.driver);
+      this.$store.commit("changeRiderStatus", "requestAccepted");
+      
+      setTimeout(() => {
+        this.$store.commit("changeRiderStatus", "init");
+      }, 10000);
+    });
+    this.sockets.subscribe("noAvailable", data => {
+      console.log("No available");
+    });
   }
 };
 </script>

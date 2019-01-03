@@ -11,53 +11,53 @@ module.exports = function(io) {
 		let rider;
 
 		socket.on("riderRequest", data => {
-			// console.log("New rider request", socket.id);
-			let isAccepted = false;
 			rider = data;
 			rider.socketId = socket.id;
 			let availableDrivers = onlineDrivers.getDriverListByStatus("available");
-			// console.log(availableDrivers);
 			// TODO: Distance Matrix
 			// Join các driver thoả dk vào room với tên = socket id của rider
 			availableDrivers.forEach(driver => {
 				// Lấy socket của driver từ socket id
 				let driverSocket = io.sockets.connected[driver.socketId];
-				// console.log(driverSocket.id);
-				// console.log(`${rider.socketId}`);
 				// Join driver vào phòng tên = socketid của rider gửi request
 				driverSocket.join(`${rider.socketId}`);
 			});
+
+			//Gửi request tới các driver trong phòng
 			socket.to(`${rider.socketId}`).emit("newRequest", rider);
-			// console.log(io.sockets.adapter.rooms[`${rider.socketId}`]);
 		});
 
 		socket.on("driverRejected", data => {
 			// Leave room có tên = socket id của rider
 			socket.leave(`${data.rider.socketId}`, () => {
 				// Tìm số driver còn lại trong phòng
-				let room = io.sockets.adapter.room[`${rider.socketId}`];
+				let room = io.sockets.adapter.rooms[`${data.rider.socketId}`];
 				let remainDriver = room.length;
 
 				// Nếu không còn driver nào trong phòng, emit lỗi cho rider
-				if (remainDriver === 0) {
+				if (remainDriver === 1) {
 					io.to(`${data.rider.socketId}`).emit("noAvailable", {});
 				}
 			});
+			// socketsId = io.sockets.adapter.rooms[`${data.rider.socketId}`].sockets;
+			// console.log(socketsId);
 		});
 
 		socket.on("driverAccepted", data => {
 			// Tìm tất cả socket trong phòng
-			let roster = io.sockets.clients(`${data.rider.socketId}`);
+			let socketsId = io.sockets.adapter.rooms[`${data.rider.socketId}`].sockets;
 
-			roster.forEach(client => {
+			for (let socketId in socketsId) {
 				// Nếu socket không phải rider hay driver emit event...
-				if (client.id !== data.rider.socketId && client.id !== socket.id) {
+				if (socketId !== data.rider.socketId && socketId !== socket.Id) {
 					// ... thì thông báo request đã có người nhận
-					io.to(`${client.id}`).emit("requestTaken", {});
+					io.to(`${socket}`).emit("requestTaken", {});
+
 					// ...và xoá khỏi phòng
+					let client = io.sockets.connected[socketId];
 					client.leave(`${data.rider.socketId}`);
 				}
-			});
+			}
 
 			// Thông báo cho rider thông tin của driver
 			socket.to(`${data.rider.socketId}`).emit("requestAccepted", data);

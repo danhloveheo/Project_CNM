@@ -2,7 +2,7 @@
   <section id="driver-accept">
     <img src="/img/blank-avatar.png" class="img-fluid driver-avatar">
     <div class="driver-info">
-      <p class="driver-name">Michelle Grant</p>
+      <p class="driver-name">{{driverInfo.fullName}}</p>
       <div class="car-info">
         <p class="car-type">
           Chevrolet Tahoe
@@ -12,6 +12,16 @@
     </div>
   </section>
 </template>
+
+<script>
+export default {
+  computed: {
+    driverInfo() {
+      return this.$store.getters.getDriverInfo;
+    }
+  }
+};
+</script>
 
 <style scoped>
 #driver-accept {
