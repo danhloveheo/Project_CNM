@@ -30,10 +30,10 @@ export default {
     this.sockets.subscribe("requestAccepted", data => {
       this.$store.commit("changeDriverInfo", data.driver);
       this.$store.commit("changeRiderStatus", "requestAccepted");
-      
-      setTimeout(() => {
-        this.$store.commit("changeRiderStatus", "init");
-      }, 10000);
+
+      // setTimeout(() => {
+      //   this.$store.commit("changeRiderStatus", "init");
+      // }, 10000);
     });
     this.sockets.subscribe("noAvailable", data => {
       console.log("No available");

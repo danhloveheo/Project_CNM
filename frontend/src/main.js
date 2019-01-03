@@ -33,11 +33,7 @@ const router = new VueRouter({
 	routes,
 	mode: "history",
 	scrollBehavior() {
-		if (savedPosition) {
-			return savedPosition;
-		} else {
-			return { x: 0, y: 0 };
-		}
+		return { x: 0, y: 0 };
 	}
 });
 

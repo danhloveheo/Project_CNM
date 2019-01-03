@@ -1,13 +1,28 @@
 <template>
   <section id="driver-accept">
-    <img src="/img/blank-avatar.png" class="img-fluid driver-avatar">
+    <div class="notification">
+      <div class="container">
+        <p>Yay, we found you a driver!</p>
+      </div>
+    </div>
     <div class="driver-info">
-      <p class="driver-name">{{driverInfo.fullName}}</p>
-      <div class="car-info">
-        <p class="car-type">
-          Chevrolet Tahoe
-          <span class="car-plate">38A-00023</span>
-        </p>
+      <div class="container">
+        <img src="img/blank-avatar.png" class="img-fluid driver-avatar">
+        <div class="message">
+          <p>
+            Hi, my name is
+            <span class="driver-name">{{driverInfo.fullName}}</span>
+          </p>
+          <p>and I am 0.2 km away</p>
+          <div class="car-info">
+            <p class="car-type">
+              <i class="fas fa-car"></i> Chevrolet Tahoe
+            </p>
+            <p>
+              <span class="car-plate">38A-00023</span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -34,38 +49,60 @@ export default {
   z-index: 1000;
 }
 
-#driver-accept .driver-avatar {
-  border-radius: 100% !important;
-  border: 5px solid #fff;
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  width: 200px;
-  height: 200px;
-  margin-top: -100px;
-  margin-left: -100px;
+#driver-accept .notification {
+  background-color: #f4f1e3;
+  position: relative;
+  width: 100%;
+  height: 25%;
+}
+
+#driver-accept .notification p {
+  color: #63a599;
+  font-size: 1.8rem;
+  font-weight: 500;
+  padding-top: 30px;
+  text-align: center;
 }
 
 #driver-accept .driver-info {
   position: absolute;
   width: 100%;
-  display: table;
-  top: 45%;
+  top: 25%;
+}
+
+#driver-accept .driver-info .driver-avatar {
+  border-radius: 100% !important;
+  border: 5px solid #f4f1e3;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  width: 150px;
+  height: 150px;
+  margin-top: -180px;
+  margin-left: -75px;
+}
+
+#driver-accept .driver-info .message {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 500;
+  text-align: center;
+  margin-top: 70px;
+}
+
+#driver-accept .driver-info .message p {
+  padding: 5px 0;
+  margin: 0 auto;
 }
 
 #driver-accept .driver-name {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #fff;
-  display: table-row;
-  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
 }
 
 #driver-accept .car-info {
-  display: table-row;
+  padding-top: 20px;
   text-align: center;
-  margin-top: 10px;
-  font-size: 1.5rem;
   color: #fff;
 }
 
